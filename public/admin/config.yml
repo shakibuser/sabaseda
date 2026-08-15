@@ -2,7 +2,7 @@
 
 backend:
   name: github
-  repo: REPLACE_ME/REPLACE_ME   # مثال: mohammadi/sabaseda  -> این خط را با owner/نام-ریپازیتوری خودتان جایگزین کنید
+  repo: shakibuser/sabaseda   # مثال: mohammadi/sabaseda  -> این خط را با owner/نام-ریپازیتوری خودتان جایگزین کنید
   branch: main
 
 # محل ذخیره تصاویر آپلودی و مسیر عمومی آن‌ها برای استفاده در فیلد image
