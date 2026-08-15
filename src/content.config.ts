@@ -11,7 +11,11 @@ const news = defineCollection({
     title: z.string(),
     summary: z.string(),
     category: z.string(),
-    publishedAt: z.string(),
+    publishedAt: z
+      .union([z.string(), z.date()])
+      .transform((value) =>
+        value instanceof Date ? value.toISOString() : value
+      ),
     image: z.string(),
     imageAlt: z.string(),
     featured: z.boolean().default(false)
