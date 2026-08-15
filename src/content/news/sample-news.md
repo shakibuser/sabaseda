@@ -8,7 +8,7 @@ category: تامین اجتماعی
 publishedAt: 2026-08-15T23:44:00+03:30
 image: /images/news/moarefe.jpg
 imageAlt: تصویر نمونه خبر صبا رسانه
-featured: true
+featured: false
 ---
 
 **🔴👈برگزاری مراسم معارفه سرپرست جدید سازمان تأمین اجتماعی**
