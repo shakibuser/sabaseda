@@ -3,7 +3,7 @@ title: هشدار بازنشستگان
 summary: متن اعتراضی یکی از فعالان مطالبه گری در حوزه بازنشستگان احسان خیری
 category: اجتماعی
 publishedAt: 2026-08-15T23:52:00+03:30
-image: /images/news/sample-news.svg
+image: /images/news/bartar.jpg
 imageAlt: تصویر نمونه خبر
 featured: false
 ---
