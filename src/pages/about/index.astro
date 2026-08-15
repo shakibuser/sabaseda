@@ -1,12 +1,22 @@
 ---
+import { getCollection, render } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import Header from "../../components/Header.astro";
 import Footer from "../../components/Footer.astro";
 import "../../styles/global.css";
+
+const pages = await getCollection("pages");
+const aboutEntry = pages.find((entry) => entry.id === "about");
+
+const { Content } = aboutEntry
+  ? await render(aboutEntry)
+  : { Content: null };
+
+const title = aboutEntry?.data.title ?? "درباره ما";
 ---
 
 <BaseLayout
-  title="درباره ما | صبا رسانه"
+  title={`${title} | صبا رسانه`}
   description="آشنایی با صبا رسانه، رسالت و رویکرد این رسانه خبری."
 >
   <Header />
@@ -14,26 +24,11 @@ import "../../styles/global.css";
   <main class="about-page container">
     <header class="about-header">
       <span class="eyebrow">صبا رسانه</span>
-      <h1>درباره ما</h1>
+      <h1>{title}</h1>
     </header>
 
     <div class="about-body">
-      <p>
-        صبا رسانه یک رسانه خبری مستقل است که با هدف پیگیری حقیقت و مطالبه
-        عدالت اجتماعی فعالیت می‌کند. تمرکز اصلی ما بر پوشش اخبار اجتماعی،
-        اقتصادی و مسائل مرتبط با حقوق شهروندان است.
-      </p>
-
-      <p>
-        این متن یک نمونه اولیه است. لطفاً آن را با معرفی واقعی تیم، سیاست
-        تحریریه و راه‌های تماس جایگزین کنید.
-      </p>
-
-      <h2>تماس با ما</h2>
-      <p>
-        برای ارسال اخبار، گزارش یا انتقاد و پیشنهاد می‌توانید با آدرس ایمیل
-        رسانه در تماس باشید (این بخش را با ایمیل واقعی خود جایگزین کنید).
-      </p>
+      {Content ? <Content /> : <p>محتوایی یافت نشد.</p>}
     </div>
   </main>
 
@@ -65,8 +60,12 @@ import "../../styles/global.css";
     line-height: 2.1;
   }
 
-  .about-body h2 {
+  .about-body :global(h2) {
     margin-top: 2rem;
     font-size: 1.3rem;
+  }
+
+  .about-body :global(p) {
+    margin: 0 0 1.4rem;
   }
 </style>

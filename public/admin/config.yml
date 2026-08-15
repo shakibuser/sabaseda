@@ -2,7 +2,7 @@
 
 backend:
   name: github
-  repo: shakibuser/sabaseda   # مثال: mohammadi/sabaseda  -> این خط را با owner/نام-ریپازیتوری خودتان جایگزین کنید
+  repo: shakibuser/sabaseda
   branch: main
 
 # محل ذخیره تصاویر آپلودی و مسیر عمومی آن‌ها برای استفاده در فیلد image
@@ -29,3 +29,13 @@ collections:
       - { label: "متن جایگزین تصویر (alt)", name: imageAlt, widget: string, hint: "برای دسترس‌پذیری و سئو؛ توضیح کوتاه تصویر" }
       - { label: "نمایش به‌عنوان خبر ویژه در صفحه اصلی", name: featured, widget: boolean, default: false }
       - { label: "متن کامل خبر", name: body, widget: markdown }
+
+  - name: pages
+    label: "صفحات ثابت"
+    files:
+      - name: about
+        label: "درباره ما"
+        file: /src/content/pages/about.md
+        fields:
+          - { label: "عنوان صفحه", name: title, widget: string }
+          - { label: "متن صفحه", name: body, widget: markdown }
