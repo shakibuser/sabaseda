@@ -1,0 +1,72 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Header from "../../components/Header.astro";
+import Footer from "../../components/Footer.astro";
+import "../../styles/global.css";
+---
+
+<BaseLayout
+  title="درباره ما | صبا رسانه"
+  description="آشنایی با صبا رسانه، رسالت و رویکرد این رسانه خبری."
+>
+  <Header />
+
+  <main class="about-page container">
+    <header class="about-header">
+      <span class="eyebrow">صبا رسانه</span>
+      <h1>درباره ما</h1>
+    </header>
+
+    <div class="about-body">
+      <p>
+        صبا رسانه یک رسانه خبری مستقل است که با هدف پیگیری حقیقت و مطالبه
+        عدالت اجتماعی فعالیت می‌کند. تمرکز اصلی ما بر پوشش اخبار اجتماعی،
+        اقتصادی و مسائل مرتبط با حقوق شهروندان است.
+      </p>
+
+      <p>
+        این متن یک نمونه اولیه است. لطفاً آن را با معرفی واقعی تیم، سیاست
+        تحریریه و راه‌های تماس جایگزین کنید.
+      </p>
+
+      <h2>تماس با ما</h2>
+      <p>
+        برای ارسال اخبار، گزارش یا انتقاد و پیشنهاد می‌توانید با آدرس ایمیل
+        رسانه در تماس باشید (این بخش را با ایمیل واقعی خود جایگزین کنید).
+      </p>
+    </div>
+  </main>
+
+  <Footer />
+</BaseLayout>
+
+<style>
+  .about-page {
+    padding-block: 50px 80px;
+  }
+
+  .about-header {
+    margin-bottom: 30px;
+  }
+
+  .about-header .eyebrow {
+    color: var(--color-primary-dark);
+    font-weight: 700;
+  }
+
+  .about-header h1 {
+    margin: 5px 0 0;
+    font-size: clamp(1.8rem, 4vw, 2.5rem);
+  }
+
+  .about-body {
+    max-width: 760px;
+    font-size: 1.05rem;
+    line-height: 2.1;
+  }
+
+  .about-body h2 {
+    margin-top: 2rem;
+    font-size: 1.3rem;
+  }
+</style>

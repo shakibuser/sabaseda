@@ -1,0 +1,68 @@
+---
+interface Props {
+  title: string;
+  description: string;
+  canonical?: string;
+  image?: string;
+  type?: "website" | "article";
+  publishedTime?: string;
+  modifiedTime?: string;
+}
+
+const {
+  title,
+  description,
+  canonical,
+  image = "/images/news/sample-news.svg",
+  type = "website",
+  publishedTime,
+  modifiedTime
+} = Astro.props;
+
+const siteUrl =
+  Astro.site?.toString().replace(/\/$/, "") ??
+  "https://sabaseda.ir";
+
+const canonicalUrl =
+  canonical ??
+  new URL(Astro.url.pathname, siteUrl).toString();
+
+const imageUrl =
+  new URL(image, siteUrl).toString();
+---
+
+<title>{title}</title>
+
+<meta name="description" content={description} />
+
+<link rel="canonical" href={canonicalUrl} />
+
+<meta property="og:type" content={type} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={canonicalUrl} />
+<meta property="og:image" content={imageUrl} />
+<meta property="og:image:alt" content={title} />
+<meta property="og:locale" content="fa_IR" />
+<meta property="og:site_name" content="صبا رسانه" />
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={imageUrl} />
+
+<meta name="robots" content="index, follow" />
+
+{publishedTime && (
+  <meta
+    property="article:published_time"
+    content={publishedTime}
+  />
+)}
+
+{modifiedTime && (
+  <meta
+    property="article:modified_time"
+    content={modifiedTime}
+  />
+)}

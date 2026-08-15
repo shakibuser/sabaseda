@@ -1,17 +1,171 @@
 ---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import NewsCard from "../components/NewsCard.astro";
+import "../styles/global.css";
+import { getCollection } from "astro:content";
 
+const allNews = await getCollection("news");
+
+const sortedNews = allNews.sort(
+  (a, b) =>
+    new Date(b.data.publishedAt).getTime() -
+    new Date(a.data.publishedAt).getTime()
+);
+
+const featuredNews =
+  sortedNews.find((item) => item.data.featured) ?? sortedNews[0];
+
+const latestNews = sortedNews.filter(
+  (item) => item.id !== featuredNews?.id
+);
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<BaseLayout
+  title="صبا رسانه | صدای حقیقت، مطالبه عدالت"
+  description="صبا رسانه، رسانه‌ای خبری برای پیگیری حقیقت و مطالبه عدالت"
+>
+  <Header />
+
+  <main>
+    <section class="hero container">
+      <div class="hero-content">
+        <span class="eyebrow">صبا رسانه</span>
+        <h1>صدای حقیقت، مطالبه عدالت</h1>
+        <p>
+          اخبار، گزارش‌ها و مطالب تحلیلی با تمرکز بر مسائل اجتماعی،
+          اقتصادی و حقوق شهروندان.
+        </p>
+      </div>
+    </section>
+
+    {featuredNews && (
+      <section class="featured container" aria-labelledby="featured-title">
+        <div class="section-heading">
+          <h2 id="featured-title">خبر اصلی</h2>
+        </div>
+
+        <NewsCard
+          title={featuredNews.data.title}
+          summary={featuredNews.data.summary}
+          category={featuredNews.data.category}
+          date={featuredNews.data.publishedAt}
+          image={featuredNews.data.image}
+          imageAlt={featuredNews.data.imageAlt}
+          href={`/news/${featuredNews.id}/`}
+          featured
+        />
+      </section>
+    )}
+
+    {latestNews.length > 0 && (
+      <section class="latest container" aria-labelledby="latest-title">
+        <div class="section-heading">
+          <h2 id="latest-title">آخرین اخبار</h2>
+        </div>
+
+        <div class="news-list">
+          {latestNews.map((item) => (
+            <NewsCard
+              title={item.data.title}
+              summary={item.data.summary}
+              category={item.data.category}
+              date={item.data.publishedAt}
+              image={item.data.image}
+              imageAlt={item.data.imageAlt}
+              href={`/news/${item.id}/`}
+            />
+          ))}
+        </div>
+      </section>
+    )}
+  </main>
+
+  <Footer />
+</BaseLayout>
+
+<style>
+  .hero {
+    padding-block: 70px 50px;
+  }
+
+  .hero-content {
+    max-width: 760px;
+  }
+
+  .eyebrow {
+    display: inline-block;
+    margin-bottom: 12px;
+    color: var(--color-primary-dark);
+    font-weight: 700;
+  }
+
+  h1 {
+    margin: 0;
+    max-width: 700px;
+    font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+    line-height: 1.45;
+    letter-spacing: -0.02em;
+  }
+
+  .hero p {
+    max-width: 650px;
+    margin: 18px 0 0;
+    color: var(--color-text-muted);
+    font-size: 1rem;
+  }
+
+  .featured,
+  .latest {
+    padding-bottom: 55px;
+  }
+
+  .section-heading {
+    margin-bottom: 22px;
+    border-bottom: 2px solid var(--color-primary);
+  }
+
+  .section-heading h2 {
+    margin: 0 0 9px;
+    font-size: 1.35rem;
+  }
+
+  .news-list {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 28px;
+    row-gap: 0;
+  }
+
+  .featured :global(.news-card.featured .news-image) {
+    aspect-ratio: 16 / 7;
+  }
+
+  .featured :global(.news-card.featured .news-title) {
+    max-width: 850px;
+  }
+
+  .latest :global(.news-card) {
+    min-width: 0;
+  }
+
+  @media (max-width: 700px) {
+    .news-list {
+      grid-template-columns: 1fr;
+    }
+
+    .featured :global(.news-card.featured .news-image) {
+      aspect-ratio: 16 / 9;
+    }
+
+    .hero {
+      padding-block: 45px 35px;
+    }
+
+    .featured,
+    .latest {
+      padding-bottom: 40px;
+    }
+  }
+</style>

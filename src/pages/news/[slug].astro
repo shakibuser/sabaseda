@@ -1,0 +1,229 @@
+---
+import type { CollectionEntry } from "astro:content";
+import { getCollection, render } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Header from "../../components/Header.astro";
+import Footer from "../../components/Footer.astro";
+import { formatPersianDateTime, toIsoDateTime } from "../../utils/date";
+import "../../styles/global.css";
+
+export async function getStaticPaths() {
+  const news = await getCollection("news");
+
+  return news.map((entry) => ({
+    params: { slug: entry.id },
+    props: { entry }
+  }));
+}
+
+type Props = {
+  entry: CollectionEntry<"news">;
+};
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+
+const publishedIso = toIsoDateTime(entry.data.publishedAt);
+const publishedPersian = formatPersianDateTime(entry.data.publishedAt);
+
+const siteUrl =
+  Astro.site?.toString().replace(/\/$/, "") ??
+  "https://sabaseda.ir";
+
+const canonicalUrl =
+  new URL(`/news/${entry.id}/`, siteUrl).toString();
+
+const imageUrl =
+  new URL(entry.data.image, siteUrl).toString();
+
+const articleSchema = {
+  "@context": "https://schema.org",
+  "@type": "NewsArticle",
+  headline: entry.data.title,
+  description: entry.data.summary,
+  image: [imageUrl],
+  datePublished: publishedIso,
+  dateModified: publishedIso,
+  inLanguage: "fa-IR",
+  mainEntityOfPage: {
+    "@type": "WebPage",
+    "@id": canonicalUrl
+  },
+  publisher: {
+    "@type": "Organization",
+    name: "صبا رسانه",
+    url: siteUrl
+  },
+  author: {
+    "@type": "Organization",
+    name: "صبا رسانه",
+    url: siteUrl
+  }
+};
+---
+
+<BaseLayout
+  title={`${entry.data.title} | صبا رسانه`}
+  description={entry.data.summary}
+  canonical={canonicalUrl}
+  image={entry.data.image}
+  type="article"
+  publishedTime={publishedIso}
+  modifiedTime={publishedIso}
+>
+  <Fragment slot="head">
+    <meta property="article:section" content={entry.data.category} />
+
+    <script
+      type="application/ld+json"
+      set:html={JSON.stringify(articleSchema)}
+    />
+  </Fragment>
+
+  <Header />
+
+  <main class="article-page">
+    <article class="article container">
+      <header class="article-header">
+        <a
+          class="article-category"
+          href={`/category/${encodeURIComponent(entry.data.category)}/`}
+        >
+          {entry.data.category}
+        </a>
+
+        <h1>{entry.data.title}</h1>
+
+        <time
+          class="article-date"
+          datetime={publishedIso}
+          itemprop="datePublished"
+        >
+          {publishedPersian}
+        </time>
+      </header>
+
+      <figure class="article-figure">
+        <img
+          src={entry.data.image}
+          alt={entry.data.imageAlt}
+          width="1600"
+          height="900"
+          loading="eager"
+          decoding="async"
+        />
+      </figure>
+
+      <div class="article-summary">
+        {entry.data.summary}
+      </div>
+
+      <div class="article-body">
+        <Content />
+      </div>
+    </article>
+  </main>
+
+  <Footer />
+</BaseLayout>
+
+<style>
+  .article-page {
+    padding-block: 50px 80px;
+  }
+
+  .article {
+    max-width: 900px;
+  }
+
+  .article-header {
+    margin-bottom: 30px;
+  }
+
+  .article-category {
+    display: inline-block;
+    margin-bottom: 12px;
+    color: var(--color-primary-dark);
+    font-weight: 700;
+  }
+
+  .article-header h1 {
+    margin: 0;
+    font-size: clamp(1.8rem, 4vw, 3rem);
+    line-height: 1.55;
+  }
+
+  .article-date {
+    display: block;
+    margin-top: 15px;
+    color: var(--color-text-muted);
+    font-size: 0.85rem;
+  }
+
+  .article-figure {
+    margin: 0 0 30px;
+    overflow: hidden;
+    border-radius: var(--radius);
+    background: var(--color-border);
+  }
+
+  .article-figure img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .article-summary {
+    padding: 18px 20px;
+    margin-bottom: 30px;
+    border-right: 4px solid var(--color-primary);
+    background: var(--color-surface);
+    font-size: 1.05rem;
+    line-height: 2;
+  }
+
+  .article-body {
+    font-size: 1.05rem;
+    line-height: 2.15;
+  }
+
+  .article-body :global(p) {
+    margin: 0 0 1.4rem;
+  }
+
+  .article-body :global(h2) {
+    margin: 2rem 0 1rem;
+    font-size: 1.4rem;
+  }
+
+  .article-body :global(h3) {
+    margin: 1.6rem 0 0.8rem;
+    font-size: 1.2rem;
+  }
+
+  .article-body :global(a) {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .article-body :global(blockquote) {
+    margin: 1.5rem 0;
+    padding: 12px 18px;
+    border-right: 3px solid var(--color-primary);
+    color: var(--color-text-muted);
+  }
+
+  @media (max-width: 700px) {
+    .article-page {
+      padding-block: 35px 55px;
+    }
+
+    .article-header h1 {
+      font-size: 1.65rem;
+    }
+
+    .article-body {
+      font-size: 1rem;
+    }
+  }
+</style>

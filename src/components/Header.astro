@@ -1,0 +1,210 @@
+---
+const menuItems = [
+  { label: "خانه", href: "/" },
+  { label: "آخرین اخبار", href: "/news/" }
+];
+
+const currentPath = Astro.url.pathname;
+---
+
+<header class="site-header">
+  <div class="container header-inner">
+    <a class="brand" href="/" aria-label="صبا رسانه، صفحه اصلی">
+      <span class="brand-name">صبا رسانه</span>
+      <span class="brand-tagline">صدای حقیقت، مطالبه عدالت</span>
+    </a>
+
+    <button
+      class="menu-toggle"
+      type="button"
+      aria-label="باز کردن منو"
+      aria-expanded="false"
+      aria-controls="main-navigation"
+      data-menu-toggle
+    >
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+
+    <nav id="main-navigation" class="main-navigation" aria-label="منوی اصلی" data-menu>
+      <ul>
+        {menuItems.map((item) => (
+          <li>
+            <a
+              href={item.href}
+              class:list={{
+                active: item.href === "/" ? currentPath === "/" : currentPath.startsWith(item.href)
+              }}
+            >
+              {item.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+
+    <button
+      class="theme-toggle"
+      type="button"
+      aria-label="تغییر حالت روشن و تیره"
+      data-theme-toggle
+    >
+      🌓
+    </button>
+  </div>
+</header>
+
+<script>
+  const toggle = document.querySelector("[data-menu-toggle]");
+  const menu = document.querySelector("[data-menu]");
+
+  if (toggle && menu) {
+    toggle.addEventListener("click", () => {
+      const open = toggle.getAttribute("aria-expanded") === "true";
+      toggle.setAttribute("aria-expanded", String(!open));
+      if (open) menu.removeAttribute("data-open");
+      else menu.setAttribute("data-open", "");
+    });
+
+    menu.querySelectorAll("a").forEach((link) => {
+      link.addEventListener("click", () => {
+        toggle.setAttribute("aria-expanded", "false");
+        menu.removeAttribute("data-open");
+      });
+    });
+  }
+
+  const themeToggle = document.querySelector("[data-theme-toggle]");
+  const root = document.documentElement;
+  const STORAGE_KEY = "saba-theme";
+
+  const applyTheme = (theme) => {
+    if (theme === "dark") root.setAttribute("data-theme", "dark");
+    else root.removeAttribute("data-theme");
+  };
+
+  const savedTheme = localStorage.getItem(STORAGE_KEY);
+  if (savedTheme) applyTheme(savedTheme);
+
+  themeToggle?.addEventListener("click", () => {
+    const isDark = root.getAttribute("data-theme") === "dark";
+    const next = isDark ? "light" : "dark";
+    applyTheme(next);
+    localStorage.setItem(STORAGE_KEY, next);
+  });
+</script>
+
+<style>
+  .site-header {
+    position: relative;
+    z-index: 20;
+    border-bottom: 1px solid var(--color-border);
+    background: var(--color-background);
+  }
+
+  .header-inner {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 76px;
+    gap: 20px;
+  }
+
+  .brand {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .brand-name {
+    font-size: 1.35rem;
+    font-weight: 800;
+  }
+
+  .brand-tagline {
+    margin-top: 4px;
+    color: var(--color-text-muted);
+    font-size: 0.72rem;
+  }
+
+  .main-navigation ul {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .main-navigation a {
+    display: block;
+    padding: 9px 13px;
+    border-radius: 8px;
+    color: var(--color-text);
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  .main-navigation a:hover,
+  .main-navigation a.active {
+    background: var(--color-surface);
+    color: var(--color-primary-dark);
+  }
+
+  .menu-toggle,
+  .theme-toggle {
+    width: 42px;
+    height: 42px;
+    padding: 9px;
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    background: var(--color-background);
+    cursor: pointer;
+  }
+
+  .menu-toggle {
+    display: none;
+  }
+
+  .theme-toggle {
+    font-size: 1.1rem;
+    line-height: 1;
+  }
+
+  .menu-toggle span {
+    display: block;
+    height: 2px;
+    margin: 5px 0;
+    background: currentColor;
+  }
+
+  @media (max-width: 760px) {
+    .menu-toggle {
+      display: block;
+    }
+
+    .main-navigation {
+      position: absolute;
+      top: calc(100% + 1px);
+      right: 12px;
+      left: 12px;
+      display: none;
+      padding: 8px;
+      border: 1px solid var(--color-border);
+      border-radius: 10px;
+      background: var(--color-background);
+    }
+
+    .main-navigation[data-open] {
+      display: block;
+    }
+
+    .main-navigation ul {
+      display: block;
+    }
+  }
+</style>

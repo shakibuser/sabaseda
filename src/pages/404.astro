@@ -1,0 +1,56 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import "../styles/global.css";
+---
+
+<BaseLayout
+  title="صفحه پیدا نشد | صبا رسانه"
+  description="صفحه مورد نظر یافت نشد."
+>
+  <Header />
+
+  <main class="not-found container">
+    <span class="code">404</span>
+    <h1>صفحه مورد نظر پیدا نشد</h1>
+    <p>ممکن است آدرس اشتباه باشد یا این صفحه حذف شده باشد.</p>
+    <a class="home-link" href="/">بازگشت به صفحه اصلی</a>
+  </main>
+
+  <Footer />
+</BaseLayout>
+
+<style>
+  .not-found {
+    padding-block: 90px;
+    text-align: center;
+  }
+
+  .code {
+    display: block;
+    margin-bottom: 10px;
+    color: var(--color-primary-dark);
+    font-size: 3.5rem;
+    font-weight: 800;
+  }
+
+  .not-found h1 {
+    margin: 0 0 12px;
+    font-size: 1.6rem;
+  }
+
+  .not-found p {
+    color: var(--color-text-muted);
+    margin-bottom: 26px;
+  }
+
+  .home-link {
+    display: inline-block;
+    padding: 10px 22px;
+    border-radius: 8px;
+    background: var(--color-primary);
+    color: var(--color-primary-dark);
+    font-weight: 700;
+  }
+</style>

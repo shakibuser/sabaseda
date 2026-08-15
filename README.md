@@ -1,43 +1,138 @@
-# Astro Starter Kit: Minimal
+# صبا رسانه — راه‌اندازی کامل سایت (بدون دیتابیس)
 
-```sh
-npm create astro@latest -- --template minimal
+سایت الان روی سیستم شما درست اجرا می‌شود. این راهنما شما را قدم‌به‌قدم از همین‌جا تا یک سایت زنده با دامنه‌ی خودتان و یک پنل ساده برای ارسال خبر می‌برد — همه‌چیز رایگان و بدون دیتابیس.
+
+**معماری کار:** خبرها همچنان فایل‌های مارک‌داون داخل `src/content/news/` هستند (بدون دیتابیس). برای اینکه نیازی به باز کردن کد و ساخت فایل نداشته باشید، یک پنل مدیریت گرافیکی به نام **Sveltia CMS** به آدرس `/admin` اضافه شده که مستقیماً همین فایل‌ها را برایتان می‌سازد و در گیت‌هاب ذخیره می‌کند؛ به‌محض ذخیره، Cloudflare Pages خودش سایت را دوباره می‌سازد و خبر جدید چند ثانیه بعد آنلاین می‌شود.
+
+مراحل را دقیقاً به همین ترتیب انجام دهید 👇
+
+---
+
+## مرحله ۱ — قرار دادن پروژه در یک ریپازیتوری GitHub
+
+اگر گیت‌هاب ندارید، اول در [github.com](https://github.com) یک حساب رایگان بسازید.
+
+در پوشه پروژه (`G:\sabaseda\sabaseda`) دستورات زیر را در ترمینال اجرا کنید:
+
+```bash
+git init
+git add .
+git commit -m "Initial commit"
 ```
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+سپس یک ریپازیتوری جدید (خصوصی یا عمومی، فرقی ندارد) در GitHub بسازید — مثلاً با نام `sabaseda` — و دستورهایی که GitHub بعد از ساخت ریپازیتوری نشان می‌دهد را اجرا کنید، چیزی شبیه:
 
-## 🚀 Project Structure
-
-Inside of your Astro project, you'll see the following folders and files:
-
-```text
-/
-├── public/
-├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
+```bash
+git remote add origin https://github.com/USERNAME/sabaseda.git
+git branch -M main
+git push -u origin main
 ```
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+`USERNAME` را با نام کاربری گیت‌هاب خودتان جایگزین کنید.
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+---
 
-Any static assets, like images, can be placed in the `public/` directory.
+## مرحله ۲ — دیپلوی رایگان روی Cloudflare Pages
 
-## 🧞 Commands
+1. وارد [dash.cloudflare.com](https://dash.cloudflare.com) شوید (اگر حساب ندارید، رایگان بسازید).
+2. از منو: **Workers & Pages** → **Create** → تب **Pages** → **Connect to Git**.
+3. ریپازیتوری `sabaseda` را انتخاب کنید.
+4. تنظیمات build را دقیقاً این‌طور وارد کنید:
+   - **Build command:** `npm run build`
+   - **Build output directory:** `dist`
+5. روی **Save and Deploy** بزنید. بعد از چند دقیقه یک آدرس شبیه `sabaseda.pages.dev` در اختیارتان قرار می‌گیرد — همان لحظه سایت شما زنده و روی اینترنت است.
 
-All commands are run from the root of the project, from a terminal:
+از این به بعد، هر بار که تغییری push کنید، سایت خودکار دوباره ساخته و منتشر می‌شود.
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
+---
 
-## 👀 Want to learn more?
+## مرحله ۳ — اتصال دامنه‌ی `sabaseda.ir`
 
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+1. در همان پروژه‌ی Pages که ساختید → تب **Custom domains** → **Set up a custom domain**.
+2. دامنه‌ی `sabaseda.ir` را وارد کنید.
+3. اگر DNS دامنه از قبل روی Cloudflare است، تنظیم و صدور گواهی HTTPS خودکار انجام می‌شود.
+4. اگر دامنه را از یک ثبت‌کننده‌ی دیگر (مثل ایرنیک یا هر ریسلر دیگر) خریده‌اید، دو راه دارید:
+   - **ساده‌ترین راه:** Nameserverهای دامنه را در پنل ثبت‌کننده به Nameserverهایی که Cloudflare نشان می‌دهد تغییر دهید (رایگان).
+   - یا فقط یک رکورد **CNAME** به آدرس `sabaseda.pages.dev` که Cloudflare نمایش می‌دهد، در پنل دامنه ثبت کنید.
+
+بعد از انتشار DNS (معمولاً چند دقیقه تا چند ساعت)، سایت روی `https://sabaseda.ir` بالا می‌آید.
+
+---
+
+## مرحله ۴ — فعال‌سازی پنل ارسال خبر (`/admin`)
+
+فایل `public/admin/config.yml` را باز کنید و این خط را ویرایش کنید:
+
+```yaml
+backend:
+  name: github
+  repo: REPLACE_ME/REPLACE_ME   # اینجا را با owner/نام-ریپازیتوری خودتان جایگزین کنید
+  branch: main
+```
+
+مثلاً اگر نام کاربری گیت‌هاب شما `mohammadi` و نام ریپازیتوری `sabaseda` است:
+
+```yaml
+  repo: mohammadi/sabaseda
+```
+
+تغییر را commit و push کنید:
+
+```bash
+git add public/admin/config.yml
+git commit -m "Configure CMS repo"
+git push
+```
+
+Cloudflare Pages خودکار سایت را دوباره می‌سازد.
+
+---
+
+## مرحله ۵ — ورود به پنل و گرفتن دسترسی
+
+1. آدرس `https://sabaseda.ir/admin` (یا فعلاً `https://sabaseda.pages.dev/admin`) را باز کنید.
+2. روی گزینه‌ی **Sign in with Token** بزنید (نیازی به راه‌اندازی OAuth یا سرور جداگانه نیست — چون فقط خودتان از پنل استفاده می‌کنید، همین روش ساده‌ترین و رایگان‌ترین گزینه‌ست).
+3. صفحه یک لینک به گیت‌هاب برای ساخت **Personal Access Token** نشان می‌دهد؛ روی آن کلیک کنید، وارد گیت‌هاب شوید، دسترسی لازم (write به همان ریپازیتوری) از قبل انتخاب‌شده است، فقط **Generate token** را بزنید.
+4. توکن ساخته‌شده را کپی و در همان کادر ورود پنل جای‌گذاری کنید.
+
+از این به بعد مرورگر همین توکن را به خاطر می‌سپارد و هر بار نیازی به وارد کردن دوباره نیست (مگر اینکه توکن را از گیت‌هاب حذف/منقضی کنید).
+
+---
+
+## مرحله ۶ — ارسال خبر جدید (کار روزمره‌ی شما)
+
+1. وارد `https://sabaseda.ir/admin` شوید.
+2. روی مجموعه‌ی **اخبار** بزنید → **New خبر**.
+3. عنوان، خلاصه، دسته‌بندی، تاریخ انتشار، تصویر (با کشیدن‌ورها یا انتخاب فایل)، متن جایگزین تصویر و متن کامل خبر را پر کنید.
+4. اگر می‌خواهید این خبر به‌عنوان «خبر اصلی» بالای صفحه اول نشان داده شود، گزینه‌ی «نمایش به‌عنوان خبر ویژه» را فعال کنید.
+5. روی **Publish** بزنید.
+
+همین! پنل خودش فایل مارک‌داون را می‌سازد، در گیت‌هاب commit می‌کند، Cloudflare Pages سایت را دوباره می‌سازد و طی حدود یک تا دو دقیقه خبر روی سایت زنده می‌شود — بدون اینکه شما کد یا فایلی را دستی لمس کنید.
+
+---
+
+## نکات تکمیلی
+
+- **دسترسی چند نفره:** اگر فرد دیگری هم قرار است خبر ارسال کند، کافی است او را به‌عنوان Collaborator با دسترسی write به ریپازیتوری گیت‌هاب دعوت کنید؛ او هم می‌تواند با توکن خودش وارد `/admin` شود.
+- **حذف/ویرایش خبر:** از همان پنل، روی خبر مورد نظر در لیست بزنید، ویرایش کنید و دوباره Publish بزنید؛ یا از منوی خبر گزینه‌ی Delete را بزنید.
+- **امنیت:** فقط کسی که به ریپازیتوری گیت‌هاب دسترسی نوشتن دارد می‌تواند خبر منتشر کند؛ پنل هیچ رمز عبور جداگانه‌ای ندارد چون از همان حساب گیت‌هاب استفاده می‌کند. آدرس `/admin` را هم از `robots.txt` مستثنی کرده‌ایم تا در گوگل ایندکس نشود.
+- **جایگزینی تصویر placeholder:** تصویر `sample-news.svg` فقط یک نمونه است؛ از همان مرحله ۶ به بعد، برای هر خبر تصویر واقعی آپلود کنید.
+- **متن صفحه «درباره ما»:** فایل `src/pages/about/index.astro` را با معرفی واقعی و اطلاعات تماس خودتان جایگزین کنید.
+
+---
+
+## اجرای محلی برای تست (که همین الان هم داشتید)
+
+```bash
+npm install
+npm run dev
+```
+
+اگر دو نمونه از dev server هم‌زمان اجرا شود، خطای «Another astro dev server is already running» می‌گیرید؛ با `npx astro dev stop` سرور قبلی را ببندید یا فقط همان آدرس `http://localhost:4321` را در مرورگر باز کنید.
+
+برای گرفتن نسخه‌ی نهایی که Cloudflare هم همین را می‌سازد:
+
+```bash
+npm run build
+npm run preview
+```

@@ -1,0 +1,31 @@
+# yaml-language-server: $schema=https://unpkg.com/@sveltia/cms/schema/sveltia-cms.json
+
+backend:
+  name: github
+  repo: REPLACE_ME/REPLACE_ME   # مثال: mohammadi/sabaseda  -> این خط را با owner/نام-ریپازیتوری خودتان جایگزین کنید
+  branch: main
+
+# محل ذخیره تصاویر آپلودی و مسیر عمومی آن‌ها برای استفاده در فیلد image
+media_folder: /public/images/news
+public_folder: /images/news
+
+collections:
+  - name: news
+    label: اخبار
+    label_singular: خبر
+    folder: /src/content/news
+    create: true
+    delete: true
+    format: frontmatter
+    extension: md
+    # اسلاگ بر اساس تاریخ و زمان ساخته می‌شود تا با عنوان فارسی مشکلی پیش نیاید
+    slug: "{{year}}-{{month}}-{{day}}-{{hour}}{{minute}}{{second}}"
+    fields:
+      - { label: "عنوان خبر", name: title, widget: string }
+      - { label: "خلاصه خبر", name: summary, widget: text, hint: "یک یا دو جمله کوتاه که در کارت خبر نمایش داده می‌شود" }
+      - { label: "دسته‌بندی", name: category, widget: string, hint: "مثال: اجتماعی، اقتصاد، سیاسی، ورزشی" }
+      - { label: "تاریخ و ساعت انتشار", name: publishedAt, widget: datetime, format: "YYYY-MM-DDTHH:mm:ssZ" }
+      - { label: "تصویر خبر", name: image, widget: image, hint: "تصویر با نسبت ۱۶:۹ بهتر نمایش داده می‌شود" }
+      - { label: "متن جایگزین تصویر (alt)", name: imageAlt, widget: string, hint: "برای دسترس‌پذیری و سئو؛ توضیح کوتاه تصویر" }
+      - { label: "نمایش به‌عنوان خبر ویژه در صفحه اصلی", name: featured, widget: boolean, default: false }
+      - { label: "متن کامل خبر", name: body, widget: markdown }

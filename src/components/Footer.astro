@@ -1,0 +1,79 @@
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <div>
+      <strong>صبا رسانه</strong>
+      <p>صدای حقیقت، مطالبه عدالت</p>
+    </div>
+
+    <nav aria-label="پیوندهای پایانی صفحه">
+      <a href="/about/">درباره ما</a>
+      <a href="/news/">آرشیو</a>
+      <a href="/rss.xml">RSS</a>
+    </nav>
+  </div>
+
+  <div class="container footer-bottom">
+    <small>
+      © {new Date().getFullYear()} صبا رسانه. تمامی حقوق محفوظ است.
+    </small>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    margin-top: 80px;
+    background: var(--color-primary-dark);
+    color: #fff;
+  }
+
+  .footer-inner {
+    min-height: 150px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 32px;
+  }
+
+  .footer-inner strong {
+    font-size: 1.15rem;
+  }
+
+  .footer-inner p {
+    margin: 6px 0 0;
+    opacity: 0.75;
+  }
+
+  .footer-inner nav {
+    display: flex;
+    gap: 24px;
+  }
+
+  .footer-inner nav a {
+    opacity: 0.85;
+    transition: opacity 0.2s ease;
+  }
+
+  .footer-inner nav a:hover {
+    opacity: 1;
+  }
+
+  .footer-bottom {
+    padding-block: 18px;
+    border-top: 1px solid rgba(255, 255, 255, 0.15);
+    opacity: 0.75;
+  }
+
+  @media (max-width: 650px) {
+    .footer-inner {
+      min-height: auto;
+      padding-block: 32px;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .footer-inner nav {
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+  }
+</style>
