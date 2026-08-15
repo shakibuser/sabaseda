@@ -1,9 +1,9 @@
 ---
-title: جناب آقای محمدی مدیرعامل محترم سازمان تامین اجتماعی
+title: اولین سوال از سرپرست جدید تامین اجتماعی
 summary: آیا جنابعالی توانایی ترمیم و نجات کشتی بسیار آسیب دیده و در حال غرق تامین اجتماعی را دارید⁉️
 category: اجتماعی
 publishedAt: 2026-08-13T16:20:00+03:30
-image: /images/news/sample-news.svg
+image: /images/news/sazeman.jpg
 imageAlt: تصویر
 featured: false
 ---
