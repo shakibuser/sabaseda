@@ -4,6 +4,7 @@ import { getCollection, render } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import Header from "../../components/Header.astro";
 import Footer from "../../components/Footer.astro";
+import ShareButtons from "../../components/ShareButtons.astro";
 import { formatPersianDateTime, toIsoDateTime } from "../../utils/date";
 import "../../styles/global.css";
 
@@ -117,6 +118,8 @@ const articleSchema = {
       <div class="article-summary">
         {entry.data.summary}
       </div>
+
+      <ShareButtons title={entry.data.title} url={canonicalUrl} />
 
       <div class="article-body">
         <Content />
