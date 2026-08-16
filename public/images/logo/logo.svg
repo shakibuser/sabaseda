@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400">
+  <defs>
+    <path id="handle-arc" d="M 90 290 A 150 150 0 0 0 310 290" fill="none" />
+  </defs>
+  <circle cx="200" cy="200" r="188" fill="#F5D400" stroke="#3B2A12" stroke-width="10" />
+  <text x="200" y="188" text-anchor="middle" font-family="Tahoma, Arial, sans-serif" font-weight="800" font-size="88" fill="#3B2A12">صبا</text>
+  <text x="200" y="272" text-anchor="middle" font-family="Tahoma, Arial, sans-serif" font-weight="800" font-size="88" fill="#3B2A12">رسانه</text>
+  <text font-family="Tahoma, Arial, sans-serif" font-weight="700" font-size="26" fill="#3B2A12">
+    <textPath href="#handle-arc" startOffset="50%" text-anchor="middle">@saba_rasanehh</textPath>
+  </text>
+</svg>
