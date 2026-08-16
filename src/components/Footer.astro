@@ -1,15 +1,25 @@
 <footer class="site-footer">
   <div class="container footer-inner">
-    <div>
-      <strong>صبا رسانه</strong>
-      <p>صدای حقیقت، مطالبه عدالت</p>
+    <div class="footer-brand">
+      <img
+        class="footer-logo"
+        src="/images/logo/logo.svg"
+        alt="لوگوی صبا رسانه"
+        width="56"
+        height="56"
+        loading="lazy"
+      />
+      <div>
+        <strong>صبا رسانه</strong>
+        <p>صدای حقیقت، مطالبه عدالت</p>
+      </div>
     </div>
 
     <nav aria-label="پیوندهای پایانی صفحه">
       <a href="/about/">درباره ما</a>
       <a href="/news/">آرشیو</a>
       <a href="/rss.xml">RSS</a>
-      <a
+      
         class="telegram-footer-link"
         href="https://t.me/saba_rasanehh"
         target="_blank"
@@ -47,6 +57,17 @@
     align-items: center;
     justify-content: space-between;
     gap: 32px;
+  }
+
+  .footer-brand {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .footer-logo {
+    flex-shrink: 0;
+    border-radius: 50%;
   }
 
   .footer-inner strong {
