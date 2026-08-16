@@ -40,7 +40,7 @@ const currentPath = Astro.url.pathname;
       <ul>
         {menuItems.map((item) => (
           <li>
-            
+            <a
               href={item.href}
               class:list={{
                 active: item.href === "/" ? currentPath === "/" : currentPath.startsWith(item.href)
@@ -53,7 +53,7 @@ const currentPath = Astro.url.pathname;
       </ul>
     </nav>
 
-    
+    <a
       class="telegram-link"
       href="https://t.me/saba_rasanehh"
       target="_blank"
