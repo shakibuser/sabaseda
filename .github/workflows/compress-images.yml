@@ -1,1 +1,37 @@
+name: Compress Images
 
+on:
+  push:
+    branches: [main]
+    paths:
+      - "public/images/**"
+
+permissions:
+  contents: write
+
+jobs:
+  compress:
+    runs-on: ubuntu-latest
+    if: "!contains(github.event.head_commit.message, '[skip ci]')"
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install sharp
+        run: npm install sharp --no-save
+
+      - name: Compress images
+        run: node scripts/compress-images.mjs
+
+      - name: Commit compressed images if changed
+        uses: stefanzweifel/git-auto-commit-action@v7
+        with:
+          commit_message: "chore: compress images [skip ci]"
+          file_pattern: "public/images/**"
+          commit_user_name: "github-actions[bot]"
+          commit_user_email: "41898282+github-actions[bot]@users.noreply.github.com"
