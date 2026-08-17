@@ -1,0 +1,39 @@
+---
+import { getCategoryColor } from "../utils/categoryColors";
+
+interface Props {
+  category: string;
+  href?: string;
+}
+
+const { category, href } = Astro.props;
+const { bg, text } = getCategoryColor(category);
+const style = `background-color:${bg};color:${text}`;
+---
+
+{href ? (
+  <a href={href} class="category-badge" style={style}>{category}</a>
+) : (
+  <span class="category-badge" style={style}>{category}</span>
+)}
+
+<style>
+  .category-badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 999px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-decoration: none;
+    line-height: 1.6;
+    white-space: nowrap;
+  }
+
+  a.category-badge {
+    transition: opacity 150ms ease;
+  }
+
+  a.category-badge:hover {
+    opacity: 0.8;
+  }
+</style>
