@@ -1,5 +1,6 @@
 ---
 import { formatPersianDateTime, toIsoDateTime } from "../utils/date";
+import CategoryBadge from "./CategoryBadge.astro";
 
 interface Props {
   title: string;
@@ -44,7 +45,7 @@ const fallbackImage = "/images/news/sample-news.svg";
 
     <div class="news-content">
       <div class="news-meta">
-        <span class="news-category">{category}</span>
+        <CategoryBadge category={category} />
         <time datetime={isoDate}>{persianDate}</time>
       </div>
 
@@ -96,9 +97,8 @@ const fallbackImage = "/images/news/sample-news.svg";
     font-size: 0.78rem;
   }
 
-  .news-category {
-    color: var(--color-primary-dark);
-    font-weight: 700;
+  .news-meta time {
+    white-space: nowrap;
   }
 
   .news-title {
