@@ -5,6 +5,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 import Header from "../../components/Header.astro";
 import Footer from "../../components/Footer.astro";
 import ShareButtons from "../../components/ShareButtons.astro";
+import CategoryBadge from "../../components/CategoryBadge.astro";
 import { formatPersianDateTime, toIsoDateTime } from "../../utils/date";
 import "../../styles/global.css";
 
@@ -86,12 +87,10 @@ const articleSchema = {
   <main class="article-page">
     <article class="article container">
       <header class="article-header">
-        <a
-          class="article-category"
+        <CategoryBadge
+          category={entry.data.category}
           href={`/category/${encodeURIComponent(entry.data.category)}/`}
-        >
-          {entry.data.category}
-        </a>
+        />
 
         <h1>{entry.data.title}</h1>
 
@@ -143,15 +142,8 @@ const articleSchema = {
     margin-bottom: 30px;
   }
 
-  .article-category {
-    display: inline-block;
-    margin-bottom: 12px;
-    color: var(--color-primary-dark);
-    font-weight: 700;
-  }
-
   .article-header h1 {
-    margin: 0;
+    margin: 14px 0 0;
     font-size: clamp(1.8rem, 4vw, 3rem);
     line-height: 1.55;
   }
