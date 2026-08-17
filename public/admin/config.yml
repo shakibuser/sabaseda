@@ -23,7 +23,23 @@ collections:
     fields:
       - { label: "عنوان خبر", name: title, widget: string }
       - { label: "خلاصه خبر", name: summary, widget: text, hint: "یک یا دو جمله کوتاه که در کارت خبر نمایش داده می‌شود" }
-      - { label: "دسته‌بندی", name: category, widget: string, hint: "مثال: اجتماعی، اقتصاد، سیاسی، ورزشی" }
+      - {
+          label: "دسته‌بندی",
+          name: category,
+          widget: select,
+          options: [
+            "اجتماعی",
+            "اقتصاد",
+            "سیاسی",
+            "ورزشی",
+            "فرهنگی و هنری",
+            "بین‌الملل",
+            "حوادث",
+            "علمی و فناوری",
+            "جامعه",
+            "رسانه"
+          ]
+        }
       - { label: "تاریخ و ساعت انتشار", name: publishedAt, widget: datetime, format: "YYYY-MM-DDTHH:mm:ssZ" }
       - { label: "تصویر خبر", name: image, widget: image, hint: "تصویر با نسبت ۱۶:۹ بهتر نمایش داده می‌شود" }
       - { label: "متن جایگزین تصویر (alt)", name: imageAlt, widget: string, hint: "برای دسترس‌پذیری و سئو؛ توضیح کوتاه تصویر" }
