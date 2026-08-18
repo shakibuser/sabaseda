@@ -1,0 +1,136 @@
+---
+interface Props {
+  slug: string;
+}
+
+const { slug } = Astro.props;
+const VOTES_API = "https://saba-votes.ahmadkhanifar.workers.dev";
+---
+
+<div class="vote-widget" data-vote-widget data-slug={slug} data-api={VOTES_API}>
+  <button class="vote-btn vote-like" type="button" data-vote-btn="like" aria-label="پسندیدم">
+    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M7 10v11M2 10h3.5a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H2v-11ZM7 10l4.5-7a1.5 1.5 0 0 1 2.7.9L13.5 9H20a2 2 0 0 1 2 2.4l-1.6 8A2 2 0 0 1 18.4 21H7"/>
+    </svg>
+    <span class="vote-count" data-count="like">۰</span>
+  </button>
+
+  <button class="vote-btn vote-dislike" type="button" data-vote-btn="dislike" aria-label="نپسندیدم">
+    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M17 14V3M22 14h-3.5a1 1 0 0 0-1 1v9a1 1 0 0 0 1 1H22V14ZM17 14l-4.5 7a1.5 1.5 0 0 1-2.7-.9L10.5 15H4a2 2 0 0 1-2-2.4l1.6-8A2 2 0 0 1 5.6 3H17"/>
+    </svg>
+    <span class="vote-count" data-count="dislike">۰</span>
+  </button>
+</div>
+
+<script>
+  const toPersianDigits = (n) =>
+    n.toString().replace(/\d/g, (d) => "۰۱۲۳۴۵۶۷۸۹"[Number(d)]);
+
+  document.querySelectorAll("[data-vote-widget]").forEach(async (widget) => {
+    const slug = widget.getAttribute("data-slug") || "";
+    const api = widget.getAttribute("data-api") || "";
+    const storageKey = `saba-vote:${slug}`;
+
+    const likeBtn = widget.querySelector('[data-vote-btn="like"]');
+    const dislikeBtn = widget.querySelector('[data-vote-btn="dislike"]');
+    const likeCount = widget.querySelector('[data-count="like"]');
+    const dislikeCount = widget.querySelector('[data-count="dislike"]');
+
+    const render = (likes, dislikes) => {
+      if (likeCount) likeCount.textContent = toPersianDigits(likes);
+      if (dislikeCount) dislikeCount.textContent = toPersianDigits(dislikes);
+    };
+
+    const lockAfterVote = (choice) => {
+      likeBtn?.setAttribute("disabled", "true");
+      dislikeBtn?.setAttribute("disabled", "true");
+      widget.querySelector(`[data-vote-btn="${choice}"]`)?.classList.add("voted");
+    };
+
+    try {
+      const res = await fetch(`${api}/votes/${encodeURIComponent(slug)}`);
+      if (res.ok) {
+        const data = await res.json();
+        render(data.likes ?? 0, data.dislikes ?? 0);
+      }
+    } catch {
+      // silently ignore — widget just shows zeros if unreachable
+    }
+
+    const alreadyVoted = localStorage.getItem(storageKey);
+    if (alreadyVoted) lockAfterVote(alreadyVoted);
+
+    const vote = async (choice) => {
+      if (localStorage.getItem(storageKey)) return;
+      try {
+        const res = await fetch(`${api}/votes/${encodeURIComponent(slug)}/${choice}`, {
+          method: "POST"
+        });
+        if (res.ok) {
+          const data = await res.json();
+          render(data.likes ?? 0, data.dislikes ?? 0);
+          localStorage.setItem(storageKey, choice);
+          lockAfterVote(choice);
+        }
+      } catch {
+        // silently ignore network errors
+      }
+    };
+
+    likeBtn?.addEventListener("click", () => vote("like"));
+    dislikeBtn?.addEventListener("click", () => vote("dislike"));
+  });
+</script>
+
+<style>
+  .vote-widget {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 20px 0;
+  }
+
+  .vote-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    border: 1px solid var(--color-border);
+    border-radius: 999px;
+    background: var(--color-surface);
+    color: var(--color-text);
+    font-family: inherit;
+    font-size: 0.9rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 150ms ease, transform 150ms ease;
+  }
+
+  .vote-btn svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  .vote-btn:hover:not(:disabled) {
+    background: var(--color-background);
+    transform: translateY(-1px);
+  }
+
+  .vote-btn:disabled {
+    cursor: default;
+    opacity: 0.7;
+  }
+
+  .vote-like.voted {
+    border-color: #16a34a;
+    color: #16a34a;
+    background: #dcfce7;
+  }
+
+  .vote-dislike.voted {
+    border-color: #dc2626;
+    color: #dc2626;
+    background: #fee2e2;
+  }
+</style>
