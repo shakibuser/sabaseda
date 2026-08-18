@@ -53,9 +53,11 @@ const VOTES_API = "https://saba-votes.ahmadkhanifar.workers.dev";
       if (res.ok) {
         const data = await res.json();
         render(data.likes ?? 0, data.dislikes ?? 0);
+      } else {
+        console.error("saba-vote: fetch counts failed with status", res.status);
       }
-    } catch {
-      // silently ignore — widget just shows zeros if unreachable
+    } catch (err) {
+      console.error("saba-vote: could not load counts", err);
     }
 
     const alreadyVoted = localStorage.getItem(storageKey);
@@ -72,9 +74,11 @@ const VOTES_API = "https://saba-votes.ahmadkhanifar.workers.dev";
           render(data.likes ?? 0, data.dislikes ?? 0);
           localStorage.setItem(storageKey, choice);
           lockAfterVote(choice);
+        } else {
+          console.error("saba-vote: vote failed with status", res.status);
         }
-      } catch {
-        // silently ignore network errors
+      } catch (err) {
+        console.error("saba-vote: could not submit vote", err);
       }
     };
 
