@@ -6,6 +6,7 @@ import Header from "../../components/Header.astro";
 import Footer from "../../components/Footer.astro";
 import ShareButtons from "../../components/ShareButtons.astro";
 import CategoryBadge from "../../components/CategoryBadge.astro";
+import VoteButtons from "../../components/VoteButtons.astro";
 import { formatPersianDateTime, toIsoDateTime } from "../../utils/date";
 import "../../styles/global.css";
 
@@ -38,6 +39,8 @@ const canonicalUrl =
 const imageUrl =
   new URL(entry.data.image, siteUrl).toString();
 
+const logoUrl = new URL("/images/logo/logo.png", siteUrl).toString();
+
 const articleSchema = {
   "@context": "https://schema.org",
   "@type": "NewsArticle",
@@ -47,6 +50,8 @@ const articleSchema = {
   datePublished: publishedIso,
   dateModified: publishedIso,
   inLanguage: "fa-IR",
+  articleSection: entry.data.category,
+  isAccessibleForFree: true,
   mainEntityOfPage: {
     "@type": "WebPage",
     "@id": canonicalUrl
@@ -54,13 +59,32 @@ const articleSchema = {
   publisher: {
     "@type": "Organization",
     name: "صبا رسانه",
-    url: siteUrl
+    url: siteUrl,
+    logo: {
+      "@type": "ImageObject",
+      url: logoUrl
+    }
   },
   author: {
     "@type": "Organization",
     name: "صبا رسانه",
     url: siteUrl
   }
+};
+
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: "خانه", item: siteUrl },
+    {
+      "@type": "ListItem",
+      position: 2,
+      name: entry.data.category,
+      item: new URL(`/category/${encodeURIComponent(entry.data.category)}/`, siteUrl).toString()
+    },
+    { "@type": "ListItem", position: 3, name: entry.data.title, item: canonicalUrl }
+  ]
 };
 ---
 
@@ -79,6 +103,11 @@ const articleSchema = {
     <script
       type="application/ld+json"
       set:html={JSON.stringify(articleSchema)}
+    />
+
+    <script
+      type="application/ld+json"
+      set:html={JSON.stringify(breadcrumbSchema)}
     />
   </Fragment>
 
@@ -121,6 +150,8 @@ const articleSchema = {
       <div class="article-body">
         <Content />
       </div>
+
+      <VoteButtons slug={entry.id} />
 
       <ShareButtons title={entry.data.title} url={canonicalUrl} />
     </article>
