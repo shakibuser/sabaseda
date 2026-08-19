@@ -1,0 +1,204 @@
+---
+---
+
+<div class="a11y-widget" data-a11y-widget>
+  <button
+    class="a11y-toggle"
+    type="button"
+    data-a11y-toggle
+    aria-label="تنظیمات خوانایی متن"
+    aria-expanded="false"
+    title="تنظیمات خوانایی متن"
+  >
+    Aa
+  </button>
+
+  <div class="a11y-panel" data-a11y-panel hidden>
+    <p class="a11y-panel-title">اندازه‌ی متن</p>
+
+    <div class="a11y-font-controls">
+      <button type="button" data-a11y-font="down" aria-label="کوچک‌تر کردن متن">A-</button>
+      <button type="button" data-a11y-font="reset" aria-label="اندازه‌ی پیش‌فرض متن">A</button>
+      <button type="button" data-a11y-font="up" aria-label="بزرگ‌تر کردن متن">A+</button>
+    </div>
+
+    <button
+      type="button"
+      class="a11y-bold-toggle"
+      data-a11y-bold-toggle
+      aria-pressed="false"
+    >
+      متن پررنگ‌تر
+    </button>
+  </div>
+</div>
+
+<script>
+  const FONT_KEY = "saba-a11y-font-scale";
+  const BOLD_KEY = "saba-a11y-bold";
+  const MIN_SCALE = 87.5;
+  const MAX_SCALE = 137.5;
+  const STEP = 12.5;
+  const DEFAULT_SCALE = 100;
+
+  const applyFontScale = (scale) => {
+    document.documentElement.style.fontSize = `${scale}%`;
+  };
+
+  const applyBold = (on) => {
+    document.documentElement.classList.toggle("a11y-bold", on);
+  };
+
+  const savedScale = Number(localStorage.getItem(FONT_KEY)) || DEFAULT_SCALE;
+  applyFontScale(savedScale);
+
+  const savedBold = localStorage.getItem(BOLD_KEY) === "on";
+  applyBold(savedBold);
+
+  const widget = document.querySelector("[data-a11y-widget]");
+  const toggleBtn = widget?.querySelector("[data-a11y-toggle]");
+  const panel = widget?.querySelector("[data-a11y-panel]");
+  const boldBtn = widget?.querySelector("[data-a11y-bold-toggle]");
+
+  boldBtn?.setAttribute("aria-pressed", String(savedBold));
+  boldBtn?.classList.toggle("active", savedBold);
+
+  toggleBtn?.addEventListener("click", () => {
+    const isOpen = !panel?.hasAttribute("hidden");
+    if (isOpen) {
+      panel?.setAttribute("hidden", "");
+      toggleBtn.setAttribute("aria-expanded", "false");
+    } else {
+      panel?.removeAttribute("hidden");
+      toggleBtn.setAttribute("aria-expanded", "true");
+    }
+  });
+
+  document.addEventListener("click", (e) => {
+    if (widget && !widget.contains(e.target)) {
+      panel?.setAttribute("hidden", "");
+      toggleBtn?.setAttribute("aria-expanded", "false");
+    }
+  });
+
+  widget?.querySelectorAll("[data-a11y-font]").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      let scale = Number(localStorage.getItem(FONT_KEY)) || DEFAULT_SCALE;
+      const action = btn.getAttribute("data-a11y-font");
+
+      if (action === "up") scale = Math.min(MAX_SCALE, scale + STEP);
+      else if (action === "down") scale = Math.max(MIN_SCALE, scale - STEP);
+      else scale = DEFAULT_SCALE;
+
+      localStorage.setItem(FONT_KEY, String(scale));
+      applyFontScale(scale);
+    });
+  });
+
+  boldBtn?.addEventListener("click", () => {
+    const next = !document.documentElement.classList.contains("a11y-bold");
+    applyBold(next);
+    localStorage.setItem(BOLD_KEY, next ? "on" : "off");
+    boldBtn.setAttribute("aria-pressed", String(next));
+    boldBtn.classList.toggle("active", next);
+  });
+</script>
+
+<style is:global>
+  :root.a11y-bold p,
+  :root.a11y-bold li,
+  :root.a11y-bold time,
+  :root.a11y-bold .article-body,
+  :root.a11y-bold .article-summary,
+  :root.a11y-bold .news-summary,
+  :root.a11y-bold .hero-description {
+    font-weight: 600;
+  }
+</style>
+
+<style>
+  .a11y-widget {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    z-index: 50;
+  }
+
+  .a11y-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    border: none;
+    border-radius: 50%;
+    background: var(--color-primary-dark);
+    color: #fff;
+    font-family: var(--font-family);
+    font-weight: 800;
+    font-size: 0.95rem;
+    cursor: pointer;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.18);
+  }
+
+  .a11y-panel {
+    position: absolute;
+    bottom: calc(100% + 10px);
+    left: 0;
+    width: 200px;
+    padding: 14px;
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
+    background: var(--color-background);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  }
+
+  .a11y-panel-title {
+    margin: 0 0 10px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--color-text-muted);
+  }
+
+  .a11y-font-controls {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 10px;
+  }
+
+  .a11y-font-controls button {
+    flex: 1;
+    padding: 8px 0;
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    background: var(--color-surface);
+    color: var(--color-text);
+    font-family: var(--font-family);
+    font-weight: 700;
+    cursor: pointer;
+  }
+
+  .a11y-font-controls button:hover {
+    background: var(--color-primary);
+    color: var(--color-primary-dark);
+  }
+
+  .a11y-bold-toggle {
+    width: 100%;
+    padding: 8px 0;
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    background: var(--color-surface);
+    color: var(--color-text);
+    font-family: var(--font-family);
+    font-weight: 700;
+    font-size: 0.85rem;
+    cursor: pointer;
+  }
+
+  .a11y-bold-toggle.active {
+    background: var(--color-primary);
+    color: var(--color-primary-dark);
+    border-color: var(--color-primary);
+  }
+</style>
