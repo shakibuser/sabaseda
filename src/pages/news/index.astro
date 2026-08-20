@@ -4,6 +4,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 import Header from "../../components/Header.astro";
 import Footer from "../../components/Footer.astro";
 import NewsCard from "../../components/NewsCard.astro";
+import { getCategoryColor } from "../../utils/categoryColors";
 import "../../styles/global.css";
 
 const news = (await getCollection("news")).sort(
@@ -11,6 +12,8 @@ const news = (await getCollection("news")).sort(
     new Date(b.data.publishedAt).getTime() -
     new Date(a.data.publishedAt).getTime()
 );
+
+const categories = [...new Set(news.map((item) => item.data.category))];
 ---
 
 <BaseLayout
@@ -19,25 +22,69 @@ const news = (await getCollection("news")).sort(
 >
   <Header />
 
-  <main class="archive-page container">
+  <main class="archive-page container" id="search">
     <header class="archive-header">
       <span class="eyebrow">صبا رسانه</span>
       <h1>آرشیو اخبار</h1>
       <p>آخرین اخبار و گزارش‌های منتشرشده در صبا رسانه</p>
     </header>
 
-    {news.length > 0 ? (
-      <div class="archive-grid">
-        {news.map((item) => (
-          <NewsCard
-            title={item.data.title}
-            summary={item.data.summary}
-            category={item.data.category}
-            date={item.data.publishedAt}
-            image={item.data.image}
-            imageAlt={item.data.imageAlt}
-            href={`/news/${item.id}/`}
+    {news.length > 0 && (
+      <div class="search-filter-bar">
+        <div class="search-box">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"/>
+            <path d="m21 21-4.3-4.3"/>
+          </svg>
+          <input
+            type="text"
+            placeholder="جست‌وجو در عنوان یا خلاصه‌ی خبر..."
+            data-search-input
+            aria-label="جست‌وجوی خبر"
           />
+        </div>
+
+        <div class="category-filters" data-category-filters role="group" aria-label="فیلتر بر اساس دسته‌بندی">
+          <button type="button" class="filter-chip active" data-filter="all">همه</button>
+          {categories.map((category) => {
+            const { bg, text } = getCategoryColor(category);
+            return (
+              <button
+                type="button"
+                class="filter-chip"
+                data-filter={category}
+                style={`--chip-bg:${bg};--chip-text:${text}`}
+              >
+                {category}
+              </button>
+            );
+          })}
+        </div>
+
+        <p class="no-results" data-no-results hidden>خبری با این مشخصات پیدا نشد.</p>
+      </div>
+    )}
+
+    {news.length > 0 ? (
+      <div class="archive-grid" data-news-grid>
+        {news.map((item) => (
+          <div
+            class="news-item"
+            data-news-item
+            data-title={item.data.title}
+            data-summary={item.data.summary}
+            data-category={item.data.category}
+          >
+            <NewsCard
+              title={item.data.title}
+              summary={item.data.summary}
+              category={item.data.category}
+              date={item.data.publishedAt}
+              image={item.data.image}
+              imageAlt={item.data.imageAlt}
+              href={`/news/${item.id}/`}
+            />
+          </div>
         ))}
       </div>
     ) : (
@@ -47,6 +94,50 @@ const news = (await getCollection("news")).sort(
 
   <Footer />
 </BaseLayout>
+
+<script>
+  const searchInput = document.querySelector("[data-search-input]");
+  const filterButtons = document.querySelectorAll("[data-filter]");
+  const newsItems = document.querySelectorAll("[data-news-item]");
+  const noResults = document.querySelector("[data-no-results]");
+
+  let activeCategory = "all";
+
+  const normalize = (text) => (text || "").toLowerCase().trim();
+
+  const applyFilters = () => {
+    const query = normalize(searchInput ? searchInput.value : "");
+    let visibleCount = 0;
+
+    newsItems.forEach((item) => {
+      const title = normalize(item.getAttribute("data-title"));
+      const summary = normalize(item.getAttribute("data-summary"));
+      const category = item.getAttribute("data-category") || "";
+
+      const matchesQuery = !query || title.includes(query) || summary.includes(query);
+      const matchesCategory = activeCategory === "all" || category === activeCategory;
+      const visible = matchesQuery && matchesCategory;
+
+      item.style.display = visible ? "" : "none";
+      if (visible) visibleCount += 1;
+    });
+
+    if (noResults) {
+      noResults.hidden = visibleCount !== 0;
+    }
+  };
+
+  searchInput?.addEventListener("input", applyFilters);
+
+  filterButtons.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      activeCategory = btn.getAttribute("data-filter") || "all";
+      filterButtons.forEach((b) => b.classList.remove("active"));
+      btn.classList.add("active");
+      applyFilters();
+    });
+  });
+</script>
 
 <style>
   .archive-page {
@@ -69,6 +160,79 @@ const news = (await getCollection("news")).sort(
 
   .archive-header p {
     margin: 10px 0 0;
+    color: var(--color-text-muted);
+  }
+
+  .search-filter-bar {
+    margin-bottom: 34px;
+    padding: 18px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    background: var(--color-surface);
+  }
+
+  .search-box {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    margin-bottom: 14px;
+    border: 1px solid var(--color-border);
+    border-radius: 999px;
+    background: var(--color-background);
+  }
+
+  .search-box svg {
+    flex-shrink: 0;
+    width: 20px;
+    height: 20px;
+    color: var(--color-text-muted);
+  }
+
+  .search-box input {
+    flex: 1;
+    border: none;
+    background: transparent;
+    color: var(--color-text);
+    font-family: var(--font-family);
+    font-size: 0.95rem;
+  }
+
+  .search-box input:focus {
+    outline: none;
+  }
+
+  .category-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .filter-chip {
+    padding: 6px 16px;
+    border: 1px solid var(--color-border);
+    border-radius: 999px;
+    background: var(--color-background);
+    color: var(--color-text);
+    font-family: var(--font-family);
+    font-size: 0.82rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform 120ms ease;
+  }
+
+  .filter-chip:hover {
+    transform: translateY(-1px);
+  }
+
+  .filter-chip.active {
+    background: var(--chip-bg, var(--color-primary));
+    color: var(--chip-text, var(--color-primary-dark));
+    border-color: transparent;
+  }
+
+  .no-results {
+    margin: 16px 2px 0;
     color: var(--color-text-muted);
   }
 
