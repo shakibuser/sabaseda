@@ -44,6 +44,18 @@ const currentPath = Astro.url.pathname;
 
       <div class="icon-group">
         <a
+          class="search-link"
+          href="/news/#search"
+          aria-label="جست‌وجوی خبر"
+          title="جست‌وجوی خبر"
+        >
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"/>
+            <path d="m21 21-4.3-4.3"/>
+          </svg>
+        </a>
+
+        <a
           class="telegram-link"
           href="https://t.me/saba_rasanehh"
           target="_blank"
@@ -233,7 +245,8 @@ const currentPath = Astro.url.pathname;
 
   .menu-toggle,
   .theme-toggle,
-  .telegram-link {
+  .telegram-link,
+  .search-link {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -247,9 +260,16 @@ const currentPath = Astro.url.pathname;
     transition: background 150ms ease;
   }
 
+  .search-link svg {
+    width: 100%;
+    height: 100%;
+    color: var(--color-text);
+  }
+
   .menu-toggle:hover,
   .theme-toggle:hover,
-  .telegram-link:hover {
+  .telegram-link:hover,
+  .search-link:hover {
     background: var(--color-surface);
   }
 
