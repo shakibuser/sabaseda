@@ -37,20 +37,7 @@
           aria-label="اینستاگرام صبا رسانه"
           title="اینستاگرام"
         >
-          <svg viewBox="0 0 240 240" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <defs>
-              <linearGradient id="ig-grad" x1="0%" y1="100%" x2="100%" y2="0%">
-                <stop offset="0%" stop-color="#FEE411"/>
-                <stop offset="30%" stop-color="#FB5A2B"/>
-                <stop offset="65%" stop-color="#E1306C"/>
-                <stop offset="100%" stop-color="#7638FA"/>
-              </linearGradient>
-            </defs>
-            <circle cx="120" cy="120" r="120" fill="url(#ig-grad)"/>
-            <rect x="70" y="70" width="100" height="100" rx="28" fill="none" stroke="#fff" stroke-width="10"/>
-            <circle cx="120" cy="120" r="24" fill="none" stroke="#fff" stroke-width="10"/>
-            <circle cx="150" cy="90" r="7" fill="#fff"/>
-          </svg>
+          <img src="/images/social-instagram.png" alt="اینستاگرام" width="34" height="34" loading="lazy" />
         </a>
 
         <a
@@ -78,21 +65,7 @@
           aria-label="بله صبا رسانه"
           title="بله"
         >
-          <svg viewBox="0 0 240 240" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <circle cx="120" cy="120" r="120" fill="#00AA8D"/>
-            <path
-              fill="#fff"
-              d="M70 105c0-19.3 15.7-35 35-35h30c19.3 0 35 15.7 35 35v25c0 19.3-15.7 35-35 35H98l-22 18v-18c-3.4-4.6-6-11.9-6-18v-42Z"
-            />
-            <path
-              fill="#00AA8D"
-              d="m101 120 13 13 26-26"
-              stroke="#00AA8D"
-              stroke-width="8"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            />
-          </svg>
+          <img src="/images/social-bale.png" alt="بله" width="34" height="34" loading="lazy" />
         </a>
 
         <a
@@ -103,20 +76,7 @@
           aria-label="روبیکا صبا رسانه"
           title="روبیکا"
         >
-          <svg viewBox="0 0 240 240" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <defs>
-              <linearGradient id="rb-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stop-color="#F2545B"/>
-                <stop offset="50%" stop-color="#FF7A45"/>
-                <stop offset="100%" stop-color="#6C5CE7"/>
-              </linearGradient>
-            </defs>
-            <circle cx="120" cy="120" r="120" fill="url(#rb-grad)"/>
-            <path
-              fill="#fff"
-              d="M120 55c9 18 27 27 45 27-9 18-9 36 0 54-18 0-36 9-45 27-9-18-27-27-45-27 9-18 9-36 0-54 18 0 36-9 45-27Z"
-            />
-          </svg>
+          <img src="/images/social-rubika.png" alt="روبیکا" width="34" height="34" loading="lazy" />
         </a>
       </div>
     </div>
@@ -185,6 +145,8 @@
 
   .social-icon {
     display: flex;
+    align-items: center;
+    justify-content: center;
     width: 34px;
     height: 34px;
     transition: transform 150ms ease;
@@ -194,9 +156,11 @@
     transform: translateY(-3px);
   }
 
-  .social-icon svg {
+  .social-icon svg,
+  .social-icon img {
     width: 100%;
     height: 100%;
+    object-fit: contain;
   }
 
   .footer-bottom {
