@@ -18,6 +18,11 @@ collections:
     delete: true
     format: frontmatter
     extension: md
+    sortable_fields:
+      fields: [publishedAt, title]
+      default:
+        field: publishedAt
+        direction: descending
     # اسلاگ بر اساس تاریخ و زمان ساخته می‌شود تا با عنوان فارسی مشکلی پیش نیاید
     slug: "{{year}}-{{month}}-{{day}}-{{hour}}{{minute}}{{second}}"
     fields:
