@@ -1,0 +1,157 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Header from "../../components/Header.astro";
+import Footer from "../../components/Footer.astro";
+import NewsCard from "../../components/NewsCard.astro";
+import CategoryBadge from "../../components/CategoryBadge.astro";
+import "../../styles/global.css";
+
+export async function getStaticPaths() {
+  const news = await getCollection("news");
+
+  const categories = [
+    ...new Set(news.map((entry) => entry.data.category))
+  ];
+
+  return categories.map((category) => ({
+    params: {
+      category
+    },
+    props: {
+      category
+    }
+  }));
+}
+
+const { category } = Astro.props;
+
+const allNews = await getCollection("news");
+
+const categoryNews = allNews
+  .filter((entry) => entry.data.category === category)
+  .sort(
+    (a, b) =>
+      new Date(b.data.publishedAt).getTime() -
+      new Date(a.data.publishedAt).getTime()
+  );
+
+const title = `${category} | صبا رسانه`;
+const description = `آخرین اخبار و گزارش‌های حوزه ${category} در صبا رسانه`;
+
+const canonicalUrl = new URL(
+  `/category/${encodeURIComponent(category)}/`,
+  Astro.site ?? Astro.url.origin
+).toString();
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  canonical={canonicalUrl}
+>
+  <Header />
+
+  <main class="category-page">
+    <div class="container">
+
+      <header class="category-header">
+        <span class="eyebrow">دسته‌بندی اخبار</span>
+
+        <h1 class="category-title"><CategoryBadge category={category} /></h1>
+
+        <p>{description}</p>
+      </header>
+
+      {
+        categoryNews.length > 0 ? (
+          <section
+            class="category-grid"
+            aria-label={`اخبار ${category}`}
+          >
+            {categoryNews.map((entry) => (
+              <NewsCard
+                title={entry.data.title}
+                summary={entry.data.summary}
+                category={entry.data.category}
+                date={entry.data.publishedAt}
+                image={entry.data.image}
+                imageAlt={entry.data.imageAlt}
+                href={`/news/${entry.id}/`}
+                featured={entry.data.featured}
+              />
+            ))}
+          </section>
+        ) : (
+          <div class="empty-state">
+            خبری در این دسته‌بندی وجود ندارد.
+          </div>
+        )
+      }
+
+    </div>
+  </main>
+
+  <Footer />
+</BaseLayout>
+
+<style>
+  .category-page {
+    padding-block: 48px 80px;
+  }
+
+  .category-header {
+    max-width: 760px;
+    margin-bottom: 34px;
+  }
+
+  .eyebrow {
+    display: inline-block;
+    margin-bottom: 8px;
+    color: var(--color-accent-ink);
+    font-size: 0.82rem;
+    font-weight: 700;
+  }
+
+  .category-header h1 {
+    margin: 0;
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    line-height: 1.5;
+  }
+
+  .category-title :global(.category-badge) {
+    padding: 6px 22px;
+    font-size: clamp(1.2rem, 3vw, 1.8rem);
+    font-weight: 800;
+  }
+
+  .category-header p {
+    margin: 10px 0 0;
+    color: var(--color-text-muted);
+    line-height: 1.9;
+  }
+
+  .category-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 28px;
+  }
+
+  .empty-state {
+    padding: 35px 20px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    color: var(--color-text-muted);
+    text-align: center;
+  }
+
+  @media (max-width: 760px) {
+    .category-page {
+      padding-block: 32px 55px;
+    }
+
+    .category-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
