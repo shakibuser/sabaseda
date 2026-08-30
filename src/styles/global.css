@@ -1,6 +1,7 @@
 :root {
   --color-primary: #f5d400;
   --color-primary-dark: #5a4218;
+  --color-accent-ink: var(--color-primary-dark);
   --color-text: #242424;
   --color-text-muted: #777;
   --color-background: #f8f8f6;
@@ -70,4 +71,24 @@ input {
   --color-border: #353535;
   --color-primary: #f5d400;
   --color-primary-dark: #3d2d12;
+  --color-accent-ink: #f5d400;
+}
+
+/* Smooth, non-jarring transition whenever the theme is toggled */
+body,
+.site-header,
+.site-footer,
+.main-navigation,
+.a11y-panel {
+  transition: background-color 200ms ease, color 200ms ease, border-color 200ms ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body,
+  .site-header,
+  .site-footer,
+  .main-navigation,
+  .a11y-panel {
+    transition: none;
+  }
 }
