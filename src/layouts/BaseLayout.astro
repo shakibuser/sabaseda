@@ -1,6 +1,8 @@
 ---
 import Seo from "../components/Seo.astro";
 import AccessibilityWidget from "../components/AccessibilityWidget.astro";
+import SocialSidebar from "../components/SocialSidebar.astro";
+import ScrollToTop from "../components/ScrollToTop.astro";
 
 interface Props {
   title?: string;
@@ -112,6 +114,8 @@ const websiteSchema = {
   <body>
     <slot />
 
+    <SocialSidebar />
+    <ScrollToTop />
     <AccessibilityWidget />
 
     <script
