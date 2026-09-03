@@ -59,4 +59,9 @@ collections:
         file: /src/content/pages/about.md
         fields:
           - { label: "عنوان صفحه", name: title, widget: string }
+          - { label: "زیرعنوان (زیر عنوان اصلی)", name: subtitle, widget: string, required: false }
           - { label: "متن صفحه", name: body, widget: markdown }
+          - { label: "توضیح بخش ارتباط با ما", name: contactNote, widget: text, required: false }
+          - { label: "لینک تلگرام", name: telegram, widget: string, required: false }
+          - { label: "ایمیل", name: email, widget: string, required: false }
+          - { label: "لینک اینستاگرام", name: instagram, widget: string, required: false }
