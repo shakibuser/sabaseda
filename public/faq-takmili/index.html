@@ -4,39 +4,24 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#0f5f62">
-<meta name="color-scheme" content="light dark">
 <title>پرسش‌های رایج بیمه تکمیلی بازنشستگان تأمین اجتماعی ۱۴۰۵–۱۴۰۶</title>
 <meta name="description" content="پاسخ ساده به سؤالات رایج درباره بیمه تکمیلی بازنشستگان و مستمری‌بگیران تأمین اجتماعی؛ تهیه‌شده توسط صبا رسانه">
 <style>
-  :root{
-    --ink:#1d2a33; --muted:#51606b; --paper:#f6f8f7; --card:#ffffff;
-    --teal:#0f5f62; --teal-soft:#e2f1f0; --gold:#a8650c; --gold-soft:#fbf0dc;
-    --line:#cfdad8; --warn-bg:#fff6e0; --warn-line:#e3b04b; --focus:#1b6fd8;
-    --fs:19px;
-  }
-  @media (prefers-color-scheme: dark){
-    :root{
-      --ink:#eaf1f1; --muted:#aebdbd; --paper:#10191b; --card:#182427;
-      --teal:#5cc6c6; --teal-soft:#1b3436; --gold:#f0b565; --gold-soft:#33291a;
-      --line:#2f4245; --warn-bg:#33291a; --warn-line:#8a6a2c; --focus:#8ab8ff;
-    }
-  }
-  *{box-sizing:border-box}
+    *{box-sizing:border-box}
   html{-webkit-text-size-adjust:100%}
   body{
-    margin:0; background:var(--paper); color:var(--ink);
+    margin:0; background:#f6f8f7; color:#1d2a33;
     font-family:Vazirmatn,"Vazir","IRANSans",Tahoma,"Segoe UI",system-ui,sans-serif;
-    font-size:var(--fs); line-height:1.95;
-    padding:0 0 env(safe-area-inset-bottom,0);
+    font-size:19px; line-height:1.95;
+    
   }
   .wrap{max-width:760px; margin:0 auto; padding:0 16px}
 
   /* ---------- Header ---------- */
   header{
-    background:var(--teal); color:#fff;
-    padding:calc(22px + env(safe-area-inset-top,0px)) 0 54px;
+    background:#0f5f62; color:#fff;
+    padding:22px 0 54px;
   }
-  @media (prefers-color-scheme: dark){ header{background:#0c3f42;} }
   .brand{display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; margin:0 -6px 18px}
   .brand>*{margin:4px 6px}
   .brand-name{font-weight:700; font-size:.95em; opacity:.95}
@@ -53,46 +38,46 @@
 
   /* ---------- Tools ---------- */
   .tools{
-    background:var(--card); border:1px solid var(--line); border-radius:18px;
+    background:#ffffff; border:1px solid #cfdad8; border-radius:18px;
     padding:14px; box-shadow:0 6px 18px rgba(0,0,0,.08);
   }
   .search{
-    width:100%; font:inherit; font-size:1em; color:var(--ink); background:var(--paper);
-    border:2px solid var(--line); border-radius:12px; padding:10px 14px;
+    width:100%; font:inherit; font-size:1em; color:#1d2a33; background:#f6f8f7;
+    border:2px solid #cfdad8; border-radius:12px; padding:10px 14px;
   }
-  .search::placeholder{color:var(--muted)}
+  .search::placeholder{color:#51606b}
   .row{display:flex; flex-wrap:wrap; margin:10px -4px 0; align-items:center}
   .row>*{margin:4px}
   .btn{
-    font:inherit; font-size:.85em; cursor:pointer; color:var(--teal); background:var(--teal-soft);
+    font:inherit; font-size:.85em; cursor:pointer; color:#0f5f62; background:#e2f1f0;
     border:2px solid transparent; border-radius:12px; padding:6px 14px; min-height:44px;
   }
   .btn:active{transform:scale(.98)}
   .spacer{flex:1 1 auto}
   .fsz{display:flex; align-items:center}
   .fsz .btn{min-width:44px; padding:6px 10px; font-weight:700}
-  .fsz span{font-size:.8em; color:var(--muted); margin:0 6px}
+  .fsz span{font-size:.8em; color:#51606b; margin:0 6px}
 
-  :focus-visible{outline:3px solid var(--focus); outline-offset:2px}
+  a:focus,button:focus,summary:focus,input:focus{outline:3px solid #1b6fd8; outline-offset:2px}
 
-  .status{margin:12px 4px 0; font-size:.85em; color:var(--muted); min-height:1.6em}
+  .status{margin:12px 4px 0; font-size:.85em; color:#51606b; min-height:1.6em}
 
   /* ---------- Notice ---------- */
   .notice{
-    background:var(--warn-bg); border:1px solid var(--warn-line); border-radius:14px;
+    background:#fff6e0; border:1px solid #e3b04b; border-radius:14px;
     padding:12px 16px; margin:16px 0; font-size:.88em;
   }
 
   /* ---------- FAQ ---------- */
   .group-title{
-    margin:26px 4px 8px; font-size:1.02em; color:var(--gold); font-weight:800;
-    border-inline-start:5px solid var(--gold); padding-inline-start:10px;
+    margin:26px 4px 8px; font-size:1.02em; color:#a8650c; font-weight:800;
+    border-right:5px solid #a8650c; padding-right:10px;
   }
   details{
-    background:var(--card); border:1px solid var(--line); border-radius:16px;
+    background:#ffffff; border:1px solid #cfdad8; border-radius:16px;
     margin:10px 0; overflow:hidden;
   }
-  details[open]{border-color:var(--teal); box-shadow:0 4px 14px rgba(15,95,98,.12)}
+  details[open]{border-color:#0f5f62; box-shadow:0 4px 14px rgba(15,95,98,.12)}
   summary{
     list-style:none; cursor:pointer; padding:14px 16px; font-weight:700; min-height:56px;
     display:flex; align-items:center; justify-content:space-between;
@@ -101,33 +86,32 @@
   summary::-webkit-details-marker{display:none}
   summary::marker{content:""}
   .chev{
-    flex:0 0 auto; width:34px; height:34px; border-radius:50%; margin-inline-start:12px;
-    background:var(--teal-soft); color:var(--teal); display:flex; align-items:center; justify-content:center;
+    flex:0 0 auto; width:34px; height:34px; border-radius:50%; margin-right:12px;
+    background:#e2f1f0; color:#0f5f62; display:flex; align-items:center; justify-content:center;
     font-size:22px; line-height:1; transition:transform .2s;
   }
   details[open] .chev{transform:rotate(45deg)}
-  .ans{padding:2px 18px 18px; border-top:1px dashed var(--line); font-weight:400}
+  .ans{padding:2px 18px 18px; border-top:1px dashed #cfdad8; font-weight:400}
   .ans p{margin:12px 0 0}
-  .ans ul{margin:10px 0 0; padding-inline-start:22px}
+  .ans ul{margin:10px 0 0; padding-right:22px}
   .ans li{margin:4px 0}
-  .tag{display:inline-block; background:var(--gold-soft); color:var(--gold); border-radius:8px; padding:0 10px; font-size:.85em; font-weight:700}
-  .hl{background:var(--teal-soft); border-radius:10px; padding:10px 14px; margin-top:12px}
+  .tag{display:inline-block; background:#fbf0dc; color:#a8650c; border-radius:8px; padding:0 10px; font-size:.85em; font-weight:700}
+  .hl{background:#e2f1f0; border-radius:10px; padding:10px 14px; margin-top:12px}
 
-  .tbl-wrap{overflow-x:auto; margin-top:12px; border:1px solid var(--line); border-radius:12px; -webkit-overflow-scrolling:touch}
+  .tbl-wrap{overflow-x:auto; margin-top:12px; border:1px solid #cfdad8; border-radius:12px; -webkit-overflow-scrolling:touch}
   table{border-collapse:collapse; width:100%; min-width:430px; font-size:.86em}
-  th,td{padding:9px 12px; text-align:right; border-bottom:1px solid var(--line); vertical-align:top}
-  th{background:var(--teal-soft); color:var(--teal)}
+  th,td{padding:9px 12px; text-align:right; border-bottom:1px solid #cfdad8; vertical-align:top}
+  th{background:#e2f1f0; color:#0f5f62}
   tr:last-child td{border-bottom:0}
   td.n{white-space:nowrap}
 
   .empty{
-    display:none; text-align:center; background:var(--card); border:1px dashed var(--line);
+    display:none; text-align:center; background:#ffffff; border:1px dashed #cfdad8;
     border-radius:16px; padding:22px 16px; margin:14px 0;
   }
 
   /* ---------- Footer ---------- */
-  footer{margin:34px 0 0; padding:26px 0 calc(30px + env(safe-area-inset-bottom,0px)); background:var(--teal); color:#fff}
-  @media (prefers-color-scheme: dark){ footer{background:#0c3f42;} }
+  footer{margin:34px 0 0; padding:26px 0 30px; background:#0f5f62; color:#fff}
   footer h2{margin:0 0 4px; font-size:1.1em}
   footer p{margin:6px 0; font-size:.88em; opacity:.95}
   .links{display:flex; flex-wrap:wrap; margin:12px -4px 0}
@@ -328,7 +312,7 @@
       <summary>اطلاعات رسمی را از کجا دنبال کنم؟<span class="chev" aria-hidden="true">+</span></summary>
       <div class="ans">
         <p>برای خبرهای تازه، به اطلاعیه‌های سازمان تأمین اجتماعی و کانون بازنشستگان مراجعه کنید. اطلاعیه‌های مربوط به این قرارداد در کانال t.me/Qzvkanoon هم منتشر شده است. مبلغ دقیق سهم سازمان و حق بیمه عمر نیز از همین مسیرها اعلام می‌شود.</p>
-        <p>و برای دریافت خلاصه‌های ساده خبرها، می‌توانید صبا رسانه را در پیام‌رسان‌ها با شناسه <span class="id-pill" dir="ltr" style="background:var(--teal-soft);color:var(--teal);border-color:var(--line)">@saba_rasanehh</span> دنبال کنید.</p>
+        <p>و برای دریافت خلاصه‌های ساده خبرها، می‌توانید صبا رسانه را در پیام‌رسان‌ها با شناسه <span class="id-pill" dir="ltr" style="background:#e2f1f0;color:#0f5f62;border-color:#cfdad8">@saba_rasanehh</span> دنبال کنید.</p>
       </div>
     </details>
 
@@ -336,7 +320,7 @@
 
   <div class="empty" id="empty">
     <b>پرسشی با این عبارت پیدا نشد.</b>
-    <p style="margin:6px 0 0;font-size:.9em;color:var(--muted)">کلمه ساده‌تری بنویسید (مثلاً «حق بیمه» یا «چشم») یا جستجو را پاک کنید.</p>
+    <p style="margin:6px 0 0;font-size:.9em;color:#51606b">کلمه ساده‌تری بنویسید (مثلاً «حق بیمه» یا «چشم») یا جستجو را پاک کنید.</p>
     <button type="button" class="btn" id="clearQ" style="margin-top:10px">پاک کردن جستجو</button>
   </div>
 
@@ -447,7 +431,7 @@
     var saved = parseInt(store("saba_fs"), 10);
     if (saved >= MIN && saved <= MAX) { size = saved; }
     function applySize() {
-      document.documentElement.style.setProperty("--fs", size + "px");
+      document.body.style.fontSize = size + "px";
       store("saba_fs", String(size));
     }
     applySize();
